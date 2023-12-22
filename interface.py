@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from alpha_vantage.timeseries import TimeSeries
 import os
+import pandas as pd
 
 app = FastAPI()
 
@@ -42,10 +43,15 @@ async def show_stock_names():
         '25': 'Automatic Data Processing, Inc. - ADP'
     }
     return stocks
-    
 
 @app.get("/{symbol}")
-async def get_current_price(symbol: str):
-    ts = TimeSeries(key=ALPHA_API_KEY, output_format='json')
-    data, _ = ts.get_quote_endpoint(symbol=symbol)
-    return {"symbol": symbol, "price": data['05. price']}
+async def get_current_and_average_price(symbol: str):
+    ts = TimeSeries(key=ALPHA_API_KEY, output_format='pandas')
+    data, _ = ts.get_daily(symbol=symbol, outputsize='full')
+    data['date'] = data.index
+    data_last_50_days = data.sort_values('date', ascending=False).head(50)
+    data_last_10_days = data_last_50_days.head(10)
+    avg_price_last_10_days = data_last_10_days['4. close'].mean()
+    avg_price_last_50_days = data_last_50_days['4. close'].mean()
+    current_price = data_last_50_days['4. close'].iloc[0]
+    return {"symbol": symbol, "current_price": current_price, "avg_price_last_10_days": avg_price_last_10_days, "avg_price_last_50_days": avg_price_last_50_days}
