@@ -8,8 +8,7 @@
 class TradingEngine {
 public:
     double  monitorFile(const std::string& filename);
-    void    processData(const std::string& line);
-    void    strategy();
+    void    strategy(const double& lowValue);
     void    executeOrder(const std::string& orderType, double amount);
 
 private:
@@ -41,7 +40,7 @@ double TradingEngine::monitorFile(const std::string& filename) {
     return lowValue;  // Return the last found double value, or 0.0 if no double value was found
 }
 
-void TradingEngine::strategy() {
+void TradingEngine::strategy(const double& lowValue) {
     // Implement your strategy logic here
     // This could be a simple if-else statement or a complex algorithm
 }
