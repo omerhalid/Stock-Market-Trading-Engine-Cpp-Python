@@ -12,7 +12,7 @@ public:
     void    executeOrder(const std::string& orderType, double amount);
 
 private:
-    std::string lastProcessed;
+    // std::string lastProcessed;
     // Additional members for strategy and risk management
 };
 
