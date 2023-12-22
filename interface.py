@@ -4,8 +4,13 @@
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
+from alpha_vantage.timeseries import TimeSeries
+import os
 
 app = FastAPI()
+
+# get the API key from the environment variable
+ALPHA_API_KEY = os.environ['ALPHA_API_KEY']
 
 @app.get("/")
 async def show_stock_names():
@@ -41,6 +46,6 @@ async def show_stock_names():
 
 @app.get("/{symbol}")
 async def get_current_price(symbol: str):
-    ts = TimeSeries(key=api_key, output_format='json')
+    ts = TimeSeries(key=ALPHA_API_KEY, output_format='json')
     data, _ = ts.get_quote_endpoint(symbol=symbol)
     return {"symbol": symbol, "price": data['05. price']}
