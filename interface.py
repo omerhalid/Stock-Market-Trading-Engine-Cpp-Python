@@ -54,4 +54,8 @@ async def get_current_and_average_price(symbol: str):
     avg_price_last_10_days = data_last_10_days['4. close'].mean()
     avg_price_last_50_days = data_last_50_days['4. close'].mean()
     current_price = data_last_50_days['4. close'].iloc[0]
+    
+    with open('monitor.txt', 'a') as f:
+        f.write(f"{symbol}, {avg_price_last_10_days}, {avg_price_last_50_days}\n")
+    
     return {"symbol": symbol, "current_price": current_price, "avg_price_last_10_days": avg_price_last_10_days, "avg_price_last_50_days": avg_price_last_50_days}
