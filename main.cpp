@@ -37,6 +37,9 @@ std::tuple<std::string, double, double> TradingEngine::monitorFile(const std::st
                 return std::make_tuple(companyName, shortTermMA, longTermMA);  // Return the first tuple of values encountered
             }
         }
+        else {
+            std::cerr << "Error: Unable to open " << filename << " for reading." << std::endl;
+        }
         file.close();
 
         std::this_thread::sleep_for(std::chrono::seconds(1)); // Adjust the interval as needed
@@ -54,17 +57,27 @@ void TradingEngine::strategy(const double& shortTerm, const double& longTerm, co
     else if (shortTerm <= longTerm) {
         executeOrder("sell", 1.0, companyName);
     }
+    else {
+        std::cerr << "Error: Invalid strategy." << std::endl;
+    }
 }
 
 void TradingEngine::executeOrder(const std::string& orderType, double amount, const std::string& companyName) {
-    // Implement order execution logic
-    // Print out the order type and amount to .txt for demonstration purposes
     std::ofstream file("orders.txt", std::ios_base::app);
-    if (file) {
-        file << orderType << " " << amount << " " << companyName << std::endl;
+    if (!file) {
+        std::cerr << "Error: Unable to open orders.txt for writing." << std::endl;
+        return;
     }
+
+    file << orderType << " " << amount << " " << companyName << std::endl;
+
+    if (!file.good()) {
+        std::cerr << "Error: Writing to orders.txt failed." << std::endl;
+    }
+
     file.close();
 }
+
 
 int main() {
     TradingEngine engine;
