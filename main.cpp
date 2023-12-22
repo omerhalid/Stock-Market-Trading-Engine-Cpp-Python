@@ -66,6 +66,6 @@ void TradingEngine::executeOrder(const std::string& orderType, double amount) {
 
 int main() {
     TradingEngine engine;
-    engine.monitorFile("path_to_your_data_file.txt"); // Replace with your file path
+    engine.monitorFile("monitor.txt");
     return 0;
 }
