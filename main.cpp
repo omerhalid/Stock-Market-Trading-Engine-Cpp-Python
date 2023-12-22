@@ -9,6 +9,7 @@ class TradingEngine {
 public:
     double  monitorFile(const std::string& filename);
     void    processData(const std::string& line);
+    void    strategy();
     void    executeOrder(const std::string& orderType, double amount);
 
 private:
@@ -40,10 +41,9 @@ double TradingEngine::monitorFile(const std::string& filename) {
     return lowValue;  // Return the last found double value, or 0.0 if no double value was found
 }
 
-void TradingEngine::processData(const std::string& line) {
-    // Implement data processing and trading logic
-    // Example: Parse the line to extract trading information
-    // and make decisions based on it
+void TradingEngine::strategy() {
+    // Implement your strategy logic here
+    // This could be a simple if-else statement or a complex algorithm
 }
 
 void TradingEngine::executeOrder(const std::string& orderType, double amount) {
