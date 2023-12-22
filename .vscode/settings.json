@@ -57,6 +57,9 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "list": "cpp",
+        "cinttypes": "cpp"
+    },
+    "cmake.sourceDirectory": "C:/Users/halen/source/tradebook/vcpkg/downloads/tools/cmake-3.27.1-windows/cmake-3.27.1-windows-i386/share/cmake-3.27/Modules/FortranCInterface"
 }

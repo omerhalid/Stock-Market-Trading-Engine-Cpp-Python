@@ -11,7 +11,8 @@ import pandas as pd
 app = FastAPI()
 
 # get the API key from the environment variable
-ALPHA_API_KEY = os.environ['ALPHA_API_KEY']
+# ALPHA_API_KEY = os.environ['ALPHA_API_KEY']
+ALPHA_API_KEY = "L29QA85ZBJFL9KIL"
 
 @app.get("/")
 async def show_stock_names():
@@ -47,8 +48,14 @@ async def show_stock_names():
 @app.get("/{symbol}")
 async def get_current_and_average_price(symbol: str):
     ts = TimeSeries(key=ALPHA_API_KEY, output_format='pandas')
-    data, _ = ts.get_daily(symbol=symbol, outputsize='full')
-    data['date'] = data.index
+    try:
+        data, _ = ts.get_daily(symbol=symbol, outputsize='full')
+    except ValueError:
+        print(f"Error getting data for symbol: {symbol}")
+        raise
+    data.reset_index(inplace=True)
+    data.rename(columns={data.columns[0]: 'index'}, inplace=True)
+    data['date'] = data['index']
     data_last_50_days = data.sort_values('date', ascending=False).head(50)
     data_last_10_days = data_last_50_days.head(10)
     avg_price_last_10_days = data_last_10_days['4. close'].mean()

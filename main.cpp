@@ -8,16 +8,17 @@
 
 class TradingEngine {
 public:
-    std::pair<double, double>  monitorFile(const std::string& filename);
-    void    strategy(const double& shortTermMA, const double& longTermMA);
-    void    executeOrder(const std::string& orderType, double amount);
+    std::tuple<std::string, double, double>  monitorFile(const std::string& filename);
+    void    strategy(const double& shortTermMA, const double& longTermMA, const std::string& companyName);
+    void    executeOrder(const std::string& orderType, double amount, const std::string& companyName);
 
 private:
     // std::string lastProcessed;
     // Additional members for strategy and risk management
 };
 
-std::pair<double, double> TradingEngine::monitorFile(const std::string& filename) {
+std::tuple<std::string, double, double> TradingEngine::monitorFile(const std::string& filename) {
+    std::string companyName;
     double shortTermMA = 0.0;
     double longTermMA = 0.0;
     while (true) {
@@ -26,46 +27,48 @@ std::pair<double, double> TradingEngine::monitorFile(const std::string& filename
 
         if (file) {
             while (getline(file, currentLine)) {
-                // Split the line into shortTermMA and longTermMA
+                // Split the line into companyName, shortTermMA and longTermMA
                 std::istringstream iss(currentLine);
+                std::getline(iss, companyName, ',');
                 if (!(iss >> shortTermMA >> longTermMA)) {
                     // Error: the line doesn't contain two double values
                     continue;
                 }
-                return std::make_pair(shortTermMA, longTermMA);  // Return the first pair of double values encountered
+                return std::make_tuple(companyName, shortTermMA, longTermMA);  // Return the first tuple of values encountered
             }
         }
         file.close();
 
         std::this_thread::sleep_for(std::chrono::seconds(1)); // Adjust the interval as needed
     }
-    return std::make_pair(shortTermMA, longTermMA);  // Return the last found pair of double values, or (0.0, 0.0) if no pair was found
+    return std::make_tuple(companyName, shortTermMA, longTermMA);  // Return the last found tuple of values, or ("", 0.0, 0.0) if no tuple was found
 }
-void TradingEngine::strategy(const double& lowValue, const double& highValue) {
+void TradingEngine::strategy(const double& shortTerm, const double& longTerm, const std::string& companyName) {
     // Implement your strategy logic here
     
     // Example strategy: buy when the short-term moving average crosses above the long-term moving average
-    if (lowValue > highValue) {
-        executeOrder("buy", 1.0);
+    if (shortTerm > longTerm) {
+        executeOrder("buy", 1.0, companyName);
     }
     // Example strategy: sell when the short-term moving average crosses below the long-term moving average
-    else if (lowValue < highValue) {
-        executeOrder("sell", 1.0);
+    else if (shortTerm <= longTerm) {
+        executeOrder("sell", 1.0, companyName);
     }
 }
 
-void TradingEngine::executeOrder(const std::string& orderType, double amount) {
+void TradingEngine::executeOrder(const std::string& orderType, double amount, const std::string& companyName) {
     // Implement order execution logic
     // Print out the order type and amount to .txt for demonstration purposes
     std::ofstream file("orders.txt", std::ios_base::app);
     if (file) {
-        file << orderType << " " << amount << std::endl;
+        file << orderType << " " << amount << " " << companyName << std::endl;
     }
     file.close();
 }
 
 int main() {
     TradingEngine engine;
-    engine.monitorFile("monitor.txt");
+    auto [companyName, shortTermMA, longTermMA] = engine.monitorFile("monitor.txt");
+    engine.strategy(shortTermMA, longTermMA, companyName);
     return 0;
 }
