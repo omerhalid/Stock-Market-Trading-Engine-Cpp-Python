@@ -37,6 +37,7 @@ std::tuple<std::string, double, double> TradingEngine::monitorFile(const std::st
                 }
                 return std::make_tuple(companyName, shortTermMA, longTermMA);  // Return the first tuple of values encountered
             }
+            break;
         }
         else {
             std::cerr << "Error: Unable to open " << filename << " for reading." << std::endl;
