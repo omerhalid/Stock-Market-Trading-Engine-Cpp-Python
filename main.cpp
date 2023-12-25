@@ -24,21 +24,22 @@ std::tuple<std::string, double, double> TradingEngine::monitorFile(const std::st
     while (true) {
         std::ifstream file(filename);
         std::string currentLine;
-
+        // needs refactoring to read all lines
         if (file) {
             std::cout << "Reading " << filename << std::endl;
             while (getline(file, currentLine)) {
                 // Split the line into companyName, shortTermMA and longTermMA
                 std::istringstream iss(currentLine);
                 std::getline(iss, companyName, ',');
-                if (!(iss >> shortTermMA >> longTermMA)) {
-                    // Error: the line doesn't contain two double values
-                    continue;
-                }
+                std::string shortTermMAStr, longTermMAStr;
+                std::getline(iss, shortTermMAStr, ',');
+                std::getline(iss, longTermMAStr);
+                shortTermMA = std::stod(shortTermMAStr);
+                longTermMA = std::stod(longTermMAStr);
                 return std::make_tuple(companyName, shortTermMA, longTermMA);  // Return the first tuple of values encountered
+                }  
             }
-            break;
-        }
+        
         else {
             std::cerr << "Error: Unable to open " << filename << " for reading." << std::endl;
         }
@@ -46,6 +47,7 @@ std::tuple<std::string, double, double> TradingEngine::monitorFile(const std::st
 
         std::this_thread::sleep_for(std::chrono::seconds(1)); // Adjust the interval as needed
     }
+    std::cout << "Parsed line. shortTermMA: " << shortTermMA << ", longTermMA: " << longTermMA << std::endl;
     return std::make_tuple(companyName, shortTermMA, longTermMA);  // Return the last found tuple of values, or ("", 0.0, 0.0) if no tuple was found
 }
 void TradingEngine::strategy(const double& shortTerm, const double& longTerm, const std::string& companyName) {
@@ -65,7 +67,7 @@ void TradingEngine::strategy(const double& shortTerm, const double& longTerm, co
 }
 
 void TradingEngine::executeOrder(const std::string& orderType, double amount, const std::string& companyName) {
-    std::ofstream file("orders.txt", std::ios_base::app);
+    std::ofstream file("C:\\Users\\halen\\source\\tradebook\\orders.txt", std::ios_base::app);
     if (!file) {
         std::cerr << "Error: Unable to open orders.txt for writing." << std::endl;
         return;
@@ -84,6 +86,9 @@ void TradingEngine::executeOrder(const std::string& orderType, double amount, co
 int main() {
     TradingEngine engine;
     auto [companyName, shortTermMA, longTermMA] = engine.monitorFile("C:\\Users\\halen\\source\\tradebook\\monitor.txt");
+    std::cout << "Company Name: " << companyName << std::endl;
+    std::cout << "Short Term Moving Average: " << shortTermMA << std::endl;
+    std::cout << "Long Term Moving Average: " << longTermMA << std::endl;
     engine.strategy(shortTermMA, longTermMA, companyName);
     return 0;
 }
