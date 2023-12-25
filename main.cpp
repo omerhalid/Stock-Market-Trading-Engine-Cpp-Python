@@ -26,6 +26,7 @@ std::tuple<std::string, double, double> TradingEngine::monitorFile(const std::st
         std::string currentLine;
 
         if (file) {
+            std::cout << "Reading " << filename << std::endl;
             while (getline(file, currentLine)) {
                 // Split the line into companyName, shortTermMA and longTermMA
                 std::istringstream iss(currentLine);
@@ -81,7 +82,7 @@ void TradingEngine::executeOrder(const std::string& orderType, double amount, co
 
 int main() {
     TradingEngine engine;
-    auto [companyName, shortTermMA, longTermMA] = engine.monitorFile("monitor.txt");
+    auto [companyName, shortTermMA, longTermMA] = engine.monitorFile("C:\\Users\\halen\\source\\tradebook\\monitor.txt");
     engine.strategy(shortTermMA, longTermMA, companyName);
     return 0;
 }
