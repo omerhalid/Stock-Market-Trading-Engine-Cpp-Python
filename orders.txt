@@ -2,3 +2,4 @@ buy 1 AMZN
 buy 1 AMZN
 buy 1 AMZN
 sell 1 CSCO
+sell 1 CSCO
