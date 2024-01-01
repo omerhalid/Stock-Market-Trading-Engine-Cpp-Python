@@ -2,3 +2,9 @@
 STRATEGY: MEAN REVERSION
 AAPL, 192.53, 186.63379999999995
 --------------------
+STRATEGY: LSTM PREDICTION
+CSCO, 50.52, [[73.2317]]
+--------------------
+STRATEGY: LSTM PREDICTION
+ADBE, 596.6, [[71.71398]]
+--------------------

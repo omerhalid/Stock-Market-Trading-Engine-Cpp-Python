@@ -43,7 +43,7 @@ async def get_current_and_average_price(symbol: str):
         "avg_price_last_50_days": avg_price_last_50_days
     }
     
-def mean_reversion(symbol: str):
+async def mean_reversion(symbol: str):
     ts = TimeSeries(key=ALPHA_API_KEY, output_format='pandas')
     try:
         data, _ = ts.get_daily(symbol=symbol, outputsize='full')
@@ -72,7 +72,7 @@ def mean_reversion(symbol: str):
         "avg_price_last_50_days": avg_price_last_50_days
     }
 
-def lstm_predict(symbol: str):
+async def lstm_predict(symbol: str):
     """
     Predict the price of a stock using LSTM with using 20 years of data
     """
@@ -87,6 +87,7 @@ def lstm_predict(symbol: str):
     data.rename(columns={data.columns[0]: 'index'}, inplace=True)
     data['date'] = data['index']
     data['date'] = pd.to_datetime(data['date'])
+    current_closing = float(data['4. close'].iloc[0])
     data_last_20_years = data.sort_values('date', ascending=False).head(7305)
     year = data['date'].iloc[0].year
     month = data['date'].iloc[0].month
@@ -127,10 +128,11 @@ def lstm_predict(symbol: str):
     # For example, you can use the last 3 days' data to predict the next day's price
     predicted_stock_price = model.predict(X_test)
     predicted_stock_price = scaler.inverse_transform(predicted_stock_price)
+    
+    with open('monitor.txt', 'a') as f:
+        f.write("STRATEGY: LSTM PREDICTION\n")
+        f.write(f"{symbol}, {current_closing}, {predicted_stock_price}\n")
+        f.write("--------------------\n")
 
     # Return the predicted price (this is just a placeholder for now)
-    return f"Predicted price for {symbol} is: {predicted_stock_price[0][0]}"
-
-# Example usage
-# predicted_price = lstm_predict("AAPL")
-# print(predicted_price)
+    return f"Tomorrow's predicted price for {symbol} is: {predicted_stock_price[0][0]} and current price is {data['4. close'].iloc[0]}"

@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from alpha_vantage.timeseries import TimeSeries
 import os
 import pandas as pd
-from dependecies import get_current_and_average_price, mean_reversion
+from dependecies import get_current_and_average_price, mean_reversion, lstm_predict
 
 app = FastAPI()
 
@@ -53,3 +53,8 @@ async def short_long_avg(symbol: str):
 @app.get("/mean_reversion/{symbol}")
 async def meanReversion(symbol: str):
     return await mean_reversion(symbol)
+
+@app.get("/lstm/{symbol}")
+async def lstm(symbol: str):
+    # do we need to add the date?
+    return await lstm_predict(symbol)
