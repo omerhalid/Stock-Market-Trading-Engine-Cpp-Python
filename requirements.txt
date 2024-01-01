@@ -3,3 +3,4 @@ fastapi
 pydantic
 alpha_vantage
 pandas
+tensorflow
