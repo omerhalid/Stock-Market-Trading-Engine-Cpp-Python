@@ -11,3 +11,7 @@
     * Use a genetic algorithm to find the best strategy.
     * Create a graph to display the stock price and the predicted stock price.
 * Create a frontend to display the stock data and the trading actions.
+* Set up stripe account to accept payments.
+    * https://www.youtube.com/watch?v=pawhKs_qS-c
+    * Allow customers to cancel their subscription.
+    * Create terms of service and privacy policy.

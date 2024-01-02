@@ -11,7 +11,7 @@ from tensorflow.keras.layers import LSTM, Dense
 from alpha_vantage.timeseries import TimeSeries
 import pandas as pd
 
-ALPHA_API_KEY = "" # Put your API key here
+ALPHA_API_KEY = "L29QA85ZBJFL9KIL" # Put your API key here
 
 async def get_current_and_average_price(symbol: str):
     ts = TimeSeries(key=ALPHA_API_KEY, output_format='pandas')
