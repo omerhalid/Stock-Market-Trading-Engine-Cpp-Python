@@ -75,9 +75,10 @@ async def create_portal_session():
     )
     return {"url": session.url}
 
-app.get("/")
+@app.get("/")
 async def root():
-    return {"message": "Hello World"} # whats wrong with this?
+    message = "Hello world!"
+    return {"message": message}
 
 @app.get("/all_stocks")
 async def show_stock_names():
