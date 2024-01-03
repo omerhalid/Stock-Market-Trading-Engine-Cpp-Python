@@ -3,6 +3,10 @@
 ## Overview
 This project integrates a C++ trading engine with a FastAPI backend to create a stock market trading system. The FastAPI server fetches stock data and calculates moving averages, while the C++ engine monitors this data and executes trades based on a simple moving average crossover strategy.
 
+The system offers two subscription options: Basic and Premium. The Basic subscription provides access to a limited set of features, including basic trading strategies and data analysis tools. The Premium subscription unlocks additional features, such as advanced trading strategies and priority customer support.
+
+Payments for both subscription options are processed securely via Stripe, a leading online payment processing platform. Stripe's robust API allows us to offer a seamless checkout experience to our users while ensuring that their payment information is handled with the highest level of security.
+
 ## Trading System Strategy
 
 The trading system uses three strategies: Short Long Average, Mean Reversion, and LSTM Prediction. 

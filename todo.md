@@ -15,3 +15,4 @@
     * https://www.youtube.com/watch?v=pawhKs_qS-c
     * Allow customers to cancel their subscription.
     * Create terms of service and privacy policy.
+* Create backtesting for the strategies.
