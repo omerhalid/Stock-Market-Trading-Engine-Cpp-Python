@@ -34,6 +34,9 @@ Here's a high-level overview of how the LSTM stock prediction function works:
 
 Please note that stock price predictions are inherently uncertain and should not be used as the sole basis for trading decisions. Always consider other factors and do your own research.
 
+![image](https://github.com/omerhalid/Stock-Market-Trading-Engine-Cpp-Python/assets/102431713/2faa4533-2162-4ff7-a375-94a7c2ae663f)
+
+
 ## Components
 - `TradingEngine`: A C++ application that monitors for stock data and executes trading decisions.
 - `FastAPI Server`: Python-based server fetching stock data and writing it to a file for the C++ engine.
